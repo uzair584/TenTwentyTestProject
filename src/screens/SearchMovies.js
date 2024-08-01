@@ -28,24 +28,13 @@ const SearchMovie = ({ navigation }) => {
     useBackHandler(handleBackPress);
 
     useEffect(() => {
-        const fetchInitialMovies = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(`https://api.themoviedb.org/3/search/movie`, {
-                    params: {
-                        api_key: API_KEY,
-                        query: query,
-                    },
-                });
-                setMovies(response.data.results);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchInitialMovies();
+        dispatch(searchMovies({
+            api_key: API_KEY,
+            query: query,
+        })).then((result)=>{
+            setMovies(result?.payload?.results);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, query]);
 
 
